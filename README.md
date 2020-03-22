@@ -59,7 +59,9 @@ Certificate:
 We need to find the Credentials stored in the computer and the master key it was encrypted with, copy everything from (***important, almost all this files and directories are hidden!***):
 
 C:\Users\kabutor\AppData\Roaming\Microsoft\Crypto\RSA\
+
 and
+
 C:\Users\kabutor\AppData\Roaming\Microsoft\Protect\
 
 To find out the master key we need and to decrypt the certificate we will use mimkatz, we ask the credential file what masterkey we need to decrypt it
@@ -80,7 +82,7 @@ mimikatz # dpapi::masterkey /in:"C:\Users\kabutor\AppData\Roaming\Microsoft\Prot
 
 [masterkey] with password: supregreen (normal user)
   key : 5e6061fd32ebe306c73dc7f58506a2cb60a2f8a2265dea1b1544ad0c3834c7061bf96df151a9f7a4dbac3f63720ff5f3302ec95db106079576428c02546a5881
-***  sha1: 63a54b6d6508ec772cc6ff49058fd25c2723a526 ***
+***sha1: 63a54b6d6508ec772cc6ff49058fd25c2723a526***
 ```
 
 Now decrypt the private key to a file
