@@ -18,6 +18,7 @@ If you have windows box you can't start, maybe the drive is broken, but you have
 You have to copy this files from the broken windows computer, for this example the credentials (user:password) of the user we want the retrieve the cert from is kabutor:supergreen
 
 ***Public certificate part***
+
 This is located in:
 ```
 c:\users\kabutor\Appdata\Roaming\Microsoft\SystemCertificates\My\Certificates\
