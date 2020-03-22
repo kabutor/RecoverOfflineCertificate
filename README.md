@@ -54,7 +54,7 @@ Certificate:
 --------------------[CUT]-------------------------
 ```
 
-*** Private Certificate ***
+***Private Certificate***
 
 We need to find the Credentials stored in the computer and the master key it was encrypted with, copy everything from (***important, almost all this files and directories are hidden!***):
 
