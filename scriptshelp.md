@@ -20,7 +20,7 @@ Remove the useless header from the public certificates, you have to create a fol
 DER all the output files will be created there
 Requisites: Binwalk, dd
 
-***2 - decrypt_PVK.ps1 ***
+***2 - decrypt_PVK.ps1***
 
 Windows Powershell (run as powershell -exec bypass ./decrypt_PVK.ps1)
 You need to edit line 3 and 16 and match the SID with yours, also on line 5 use the password 
