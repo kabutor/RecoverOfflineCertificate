@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 FILE="./My/Certificates/*"
 OUTDIR='./DER/'
