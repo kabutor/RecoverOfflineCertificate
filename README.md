@@ -2,7 +2,7 @@
 How to recover a certificate from a broken (offline) Windows box
 
 
-If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you can do it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted wit DPAPI.
+If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you can do it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
 
 ***Prerequisites***
 - This assume you are retrieving the files from a Windows 10, if you use a differente Windows versions some paths, file locations, may differ.
@@ -114,7 +114,7 @@ openssl.exe x509 -inform DER -outform PEM -in 096BA4D021B50F5E78F2B9854A7461678E
 openssl.exe rsa -inform PVK -outform PEM -in raw_exchange_capi_0_d209e940-6952-4c9d-b906-372d5a3dbd50.pvk -out private.pem
 writing RSA key
 
-openssl.exe pkcs12 -in public.pem -inkey private.pem -password pass:newpass -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx cert.pfx
+openssl.exe pkcs12 -in public.pem -inkey private.pem -password pass:newpass -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
 ```
 
 This will create a cert.pfx file we can install it on a computer using *newpass* as password.
