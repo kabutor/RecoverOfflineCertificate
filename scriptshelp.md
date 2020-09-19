@@ -9,13 +9,15 @@ Masterkey files are in
 Protect/S-1-5-21-XXXXXXXXXX-XXXXXXXX-XXXXXXXXX-1001/d68ce8a2-0d11-4555-ad67-bc7c6b68d18f
 and the private parts are in RSA/SID/numbers, you've got it.
 
-*** 1 - strip_der.sh ***
+***1 - strip_der.sh***
+
 Bash script, linux.
 Remove the useless header from the public certificates, you have to create a folder called
 DER all the output files will be created there
 Requisites: Binwalk, dd
 
-*** 2 - decrypt_PVK.ps1  ***
+***2 - decrypt_PVK.ps1 ***
+
 Windows Powershell (run as powershell -exec bypass ./decrypt_PVK.ps1)
 You need to edit line 3 and 16 and match the SID with yours, also on line 5 use the password 
 of the user (local password). DPAPI is encrypted using that pass.
@@ -24,7 +26,8 @@ and then decrypt the PVK using that masterkey sha1 key.
 The output of this script is all the PVK files in the root folder, create a folder named PVk and move all the files there
 Requisites: mimikatz (disable Antivirus)
 
-*** 3 - match_pairs.sh ***
+***3 - match_pairs.sh***
+
 Bash script, linux.
 How to know what public file goes with what PVK key? Both files have to had the same value
 of "Modulus"
