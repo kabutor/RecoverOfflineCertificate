@@ -26,7 +26,7 @@ Requisites: Binwalk, dd
 
 Windows Powershell (run as powershell -exec bypass ./decrypt_PVK.ps1)
 
-You need to edit line 3 and 16 and match the SID with yours, also on line 5 use the password 
+You need to edit line 5 and 6 with the SID and the password 
 of the user (local password). DPAPI is encrypted using that pass.
 That script use mimikatz to look for the masterkey that encrypt it, decrypt it with the password,
 and then decrypt the PVK using that masterkey sha1 key.
