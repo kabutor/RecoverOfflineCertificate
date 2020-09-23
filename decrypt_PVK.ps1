@@ -1,8 +1,14 @@
+#Modify this for your user
+#you can see the value for SID inside the RSA folder, there is a folder with the S-X-X... format
+#pass is the password to log in the user 
 
+$sid= "S-1-5-21-1364892398-2168578162-1322903635-1002"
+$pass = "YOUR_PASS"
 
-Get-ChildItem ".\RSA\S-1-5-21-788893716-389553871-1612069284-1001\"  | 
+Get-ChildItem (".\RSA\" + $sid + "\") | 
 Foreach-Object {
-    $pass = "NEED TO WRITE HERE THE USER_PASSWORD"
+   
+
 	#Write-Host $_.FullName
     $first_step = "mimikatz.exe `"dpapi::capi /in:" + $_.FullName + "`" `"exit`" |findstr guidMasterKey"
     
@@ -13,7 +19,7 @@ Foreach-Object {
     write-host $master_key
 
     #decrypt masterkey with pass
-    $second_step = "mimikatz.exe `"dpapi::masterkey /in:.\Protect\S-1-5-21-788893716-389553871-1612069284-1001\" + $master_key + " /password:"+ $pass + " `"  `"exit`"|findstr sha1"
+    $second_step = "mimikatz.exe `"dpapi::masterkey /in:.\Protect\" + $sid + "\" + $master_key + " /password:"+ $pass + " `"  `"exit`"|findstr sha1"
     $salida = cmd /c $second_step
     
     $sha1_key = ($salida -split ' ')[3]
