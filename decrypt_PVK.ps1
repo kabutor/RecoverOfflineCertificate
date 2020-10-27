@@ -2,10 +2,11 @@
 #you can see the value for SID inside the RSA folder, there is a folder with the S-X-X... format
 #pass is the password to log in the user 
 
-$sid= "S-1-5-21-1364892398-2168578162-1322903635-1002"
+$sid= "S-1-5-21-3728326252-3346420467-3320468433-1001"
 $pass = "YOUR_PASS"
+$emptypass = $False
 
-Get-ChildItem (".\RSA\" + $sid + "\") | 
+Get-ChildItem (".\Crypto\RSA\" + $sid + "\") | 
 Foreach-Object {
    
 
@@ -19,11 +20,20 @@ Foreach-Object {
     write-host $master_key
 
     #decrypt masterkey with pass
-    $second_step = "mimikatz.exe `"dpapi::masterkey /in:.\Protect\" + $sid + "\" + $master_key + " /password:"+ $pass + " `"  `"exit`"|findstr sha1"
+    if ($emptypass){
+    	$second_step = "mimikatz.exe `"dpapi::masterkey /in:.\Protect\" + $sid + "\" + $master_key + " /hash:da39a3ee5e6b4b0d3255bfef95601890afd80709 `" `"exit`"|findstr sha1:"
+        write-host "no clave"
+    }
+    else{
+
+    	$second_step = "mimikatz.exe `"dpapi::masterkey /in:.\Protect\" + $sid + "\" + $master_key + " /password:"+ $pass + " `"  `"exit`"|findstr sha1"
+    }
+    
     $salida = cmd /c $second_step
     
-    $sha1_key = ($salida -split ' ')[3]
 
+    $sha1_key = ($salida -split ' ')[3]
+    write-host $sha1_key
 
     #decrypt private key
     $third_step = "mimikatz.exe `"dpapi::capi /in:" + $_.FullName + " /masterkey:" + $sha1_key + "`" `"exit`" "
