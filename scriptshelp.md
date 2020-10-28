@@ -30,7 +30,8 @@ You need to edit line 5 and 6 with the SID and the password
 of the user (local password). DPAPI is encrypted using that pass.
 That script use mimikatz to look for the masterkey that encrypt it, decrypt it with the password,
 and then decrypt the PVK using that masterkey sha1 key.
-The output of this script is all the PVK files in the root folder, create a folder named PVk and move all the files there
+The output of this script is all the PVK files in the root folder, create a folder named PVk and move all the files there.
+
 If user has no pass, you have to set to $True the $emptypass option on line 7.
 
 Requisites: mimikatz (disable Antivirus)
