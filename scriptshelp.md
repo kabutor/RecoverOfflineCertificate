@@ -11,7 +11,7 @@ Masterkey files are in
 
 Protect/S-1-5-21-XXXXXXXXXX-XXXXXXXX-XXXXXXXXX-1001/d68ce8a2-0d11-4555-ad67-bc7c6b68d18f
 
-and the private parts are in Crypto/RSA/SID/numbers, you've got it.
+and the private parts are in Crypto/RSA/<SID>/<numbers>, you've got it.
 
 ***1 - strip_der.sh***
 
@@ -32,6 +32,7 @@ That script use mimikatz to look for the masterkey that encrypt it, decrypt it w
 and then decrypt the PVK using that masterkey sha1 key.
 The output of this script is all the PVK files in the root folder, create a folder named PVk and move all the files there
 If user has no pass, you have to set to $True the $emptypass option on line 7.
+
 Requisites: mimikatz (disable Antivirus)
 
 ***3 - match_pairs.sh***
