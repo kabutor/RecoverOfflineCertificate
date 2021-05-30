@@ -13,7 +13,8 @@ Protect/S-1-5-21-XXXXXXXXXX-XXXXXXXX-XXXXXXXXX-1001/d68ce8a2-0d11-4555-ad67-bc7c
 
 and the private parts are in Crypto/RSA/<SID>/<numbers>, you've got it.
 
-***1 - strip_der.sh***
+## 1 - Extract the public part of the certificate
+  **strip_der.sh**
 
 Bash script, linux.
 
@@ -22,7 +23,15 @@ DER all the output files will be created there
 
 Requisites: Binwalk, dd
 
-***2 - decrypt_PVK.ps1***
+## 2 - Extract the private part of the certificate
+  **Linux - cert_dpapi.py**
+  
+Pass as parameters, -f the location of the file, -m the needed masterkey --sid the SID of the user, -p password or --no-pass to try with a blank password
+Script will export the certificate as a PEM file
+
+Requisites: impacket
+  
+  **Windows - decrypt_PVK.ps1**
 
 Windows Powershell (run as powershell -exec bypass ./decrypt_PVK.ps1)
 
@@ -36,7 +45,8 @@ If user has no pass, you have to set to $True the $emptypass option on line 7.
 
 Requisites: mimikatz (disable Antivirus)
 
-***3 - match_pairs.sh***
+## 3 - Match the public and private parts
+  **match_pairs.sh**
 
 Bash script, linux.
 
