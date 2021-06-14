@@ -5,13 +5,13 @@ they are very raw, and you will need to modify paths of the files to match my fi
 I put all the files from the broken machine into "My" "Protect" and "RSA".
 Public part of the certificate is in:
 
-My/Certificates/47548351737BE8BE60E20450C6A54569C1761C71
+%appdata%/Microsoft/SystemCertificates/My/Certificates/47548351737BE8BE60E20450C6A54569C1761C71
 
 Masterkey files are in 
 
-Protect/S-1-5-21-XXXXXXXXXX-XXXXXXXX-XXXXXXXXX-1001/d68ce8a2-0d11-4555-ad67-bc7c6b68d18f
+%appdata%/Microsoft/Protect/S-1-5-21-XXXXXXXXXX-XXXXXXXX-XXXXXXXXX-1001/d68ce8a2-0d11-4555-ad67-bc7c6b68d18f
 
-and the private parts are in Crypto/RSA/<SID>/<numbers>, you've got it.
+and the private parts are in %appdata%/Microsoft/Crypto/RSA/<SID>/<numbers>, you've got it.
 
 ## 1 - Extract the public part of the certificate
   **strip_der.sh**
