@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 # 
-# Extract encripted DPAPI RSA and export into a PEM file
-# 
-# 20200531  -   Initial Release
+# Extract encripted DPAPI private RSA certificate and export into a PEM file, as with the mimikatz dpapi:capi
+# Requisites:
+# - The SID of the user (usualy is something like : S-1-5-21-3677721360-166281839-1125720576-1001
+# - The encrypted file located in: Appdata\Roaming\RSA\<SID>\<file_name>
+# - The masterkey used to encrypt the file, if you pass only the private RSA file this program will tell you the name of the needed one,
+#   masterkeys are in: Appdata\Roaming\Protect\<SID>\<masterkey_file_name>
+# - The password of the user
+#  Initial version date 11/08/2021
 
 from binascii import unhexlify, hexlify
 from hashlib import pbkdf2_hmac
@@ -15,6 +20,7 @@ import argparse
 import sys, os
 
 DEBUG=False
+
 
 # Function to convert the decrypted DPAPI data into a Cryptodome RsaKey
 def pvkblob_to_pkcs1(key):
@@ -206,12 +212,6 @@ class PVKHeader(Structure):
         print("SigFlagsLen        : %.8x (%d)" % (self['SigFlagsLen'], self['SigFlagsLen']))
         print("FlagsLen           : %.8x (%d)" % (self['FlagsLen'], self['FlagsLen']))
         print("Description   : %s" % (self['Description']))
-        #print("Blank   : %s" % (self['unk2']))
-        #print("RsaHeader : %s" %    (hexlify(self['Rsaheader_new']).decode('latin-1')))
-        #print("[PRIVATE KEY]")
-        #print (self['Blob'].dump())
-        #print("[FLAGS]")
-        #print (self['ExportFlag'].dump())
 
 class bcolors:
     HEADER = '\033[95m'
@@ -271,7 +271,7 @@ def master(master_key,sid,password):
 # arguments
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--file","-f", help="blob file name")
+parser.add_argument("--file","-f", help="blob file name",default=None, type=str)
 parser.add_argument("--masterkey", "-m", help="set masterkey file")
 parser.add_argument("--sid", "-s", help="set SID(optional)")
 parser.add_argument("--password", "-p", help="user password")
@@ -280,28 +280,28 @@ parser.set_defaults(nopass=False)
 args = parser.parse_args()
 
 just_mk = False
-if (os.path.isfile(args.file)):
-    print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "File: " + args.file )
+if ((args.file != None) and (os.path.isfile(args.file)) ):
+    print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Encrypted File: " + args.file )
 else:
-    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No File" )
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No File, use -f" )
 if (args.masterkey):
     if(os.path.isfile(args.masterkey)):
         print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Masterkey File: " + args.masterkey )
     else:
         print(bcolors.FAIL +" X "+ bcolors.ENDC + "Masterkey is not a file " )
 else:
-    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No Masterkey file " )
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No Masterkey file, use -m " )
 if (args.password):
     print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Password in" )
 elif (args.nopass):
     args.password= ''
     print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Will try with no password" )
 else:
-    print(bcolors.FAIL +" X "+ bcolors.ENDC + "You need to supply password of use the --nopass " )
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "You need to supply password (-p) of use the --nopass " )
 if (args.sid):
     print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "User SID : " + args.sid )
 else:
-    print(bcolors.FAIL +" X "+ bcolors.ENDC + "Need user SID (S-1...) " )
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "Need user SID (S-1...) as --sid " )
 if args.file and not args.sid and not (args.password or args.nopass) and not args.masterkey:
     just_mk = True
 elif not args.file or not args.sid or not (args.password or args.nopass) or not args.masterkey:
@@ -348,8 +348,8 @@ if (key):
     entropy_pvk = blob['ExportFlag'].decrypt(key, b'Hj1diQ6kpUx7VC4m\0')
     print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "RSAFlag Decrypted")
     # the resulting decoded text have to be used as entropy for the decryption of the key, but if I use it, it will not decrypt
-    # More testing is needed (should be: 
-    # decrypted = blob['Blob'].decrypt(key, entropy_pvk 
+    # More testing is needed should be: 
+    # decrypted = blob['Blob'].decrypt(key, entropy_pvk) 
 
     decrypted = blob['Blob'].decrypt(key)
     
@@ -383,5 +383,7 @@ if (key):
          
 else:
     # Just print the data
-    blob.dump()
+    if DEBUG:
+        blob.dump()
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "Error Decrypting, password/sid/blob may be wrong" )
 
