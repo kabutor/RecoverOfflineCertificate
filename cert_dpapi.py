@@ -272,10 +272,11 @@ def master(master_key,sid,password):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--file","-f", help="blob file name",default=None, type=str)
-parser.add_argument("--masterkey", "-m", help="set masterkey file")
+parser.add_argument("--masterkey", "-m", help="set masterkey directory location")
 parser.add_argument("--sid", "-s", help="set SID(optional)")
 parser.add_argument("--password", "-p", help="user password")
 parser.add_argument("--nopass","-n",dest="nopass",action='store_true',help="no password")
+parser.add_argument("--out","-o",help="Output file name")
 parser.set_defaults(nopass=False)
 args = parser.parse_args()
 
@@ -285,12 +286,12 @@ if ((args.file != None) and (os.path.isfile(args.file)) ):
 else:
     print(bcolors.FAIL +" X "+ bcolors.ENDC + "No File, use -f" )
 if (args.masterkey):
-    if(os.path.isfile(args.masterkey)):
-        print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Masterkey File: " + args.masterkey )
-    else:
-        print(bcolors.FAIL +" X "+ bcolors.ENDC + "Masterkey is not a file " )
+    #if(os.path.isfile(args.masterkey)):
+    print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Masterkey location: " + args.masterkey )
+    #else:
+    #    print(bcolors.FAIL +" X "+ bcolors.ENDC + "Masterkey is not a file " )
 else:
-    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No Masterkey file, use -m " )
+    print(bcolors.FAIL +" X "+ bcolors.ENDC + "No Masterkey directory location, use -m " )
 if (args.password):
     print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "Password in" )
 elif (args.nopass):
@@ -336,9 +337,14 @@ if (just_mk):
     print("MasterKey needed: ", end="")
     print(bin_to_string(blob['Blob']['GuidMasterKey']).lower())
     sys.exit(2)
-
-#else go for the decrypt
-key = master( args.masterkey , args.sid , args.password)
+#See if MK is in the masterkey directory
+mk_location =os.path.join(args.masterkey, bin_to_string(blob['Blob']['GuidMasterKey']).lower())
+if (os.path.isfile(mk_location)):
+    #else go for the decrypt
+    key = master( mk_location , args.sid , args.password)
+else:
+    print("Can't find Masterkey file %s" % mk_location)
+    sys.exit(2)
 
 if DEBUG:
     print(hexlify(key).decode('latin-1'))
@@ -374,12 +380,14 @@ if (key):
         #call the function that will convert that structure to a Cryptodome RsaKey Object
         rsa_file = pvkblob_to_pkcs1(rsa_temp)
         print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "# # RsaKey created # #")
-
-        f = open('rsa_file.pem','wb')
+        if (args.out == None):
+            f = open('rsa_file.pem','wb')
+        else:
+            f = open(args.out,'wb')
         #export it
         f.write(rsa_file.export_key('PEM'))
         f.close()
-        print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "# # PEM Cert exported to rsa_file.pem # #")
+        print(bcolors.OKGREEN +" * "+ bcolors.ENDC + "# # PEM Cert exported to pem file# #")
          
 else:
     # Just print the data
