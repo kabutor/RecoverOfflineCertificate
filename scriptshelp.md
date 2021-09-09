@@ -26,7 +26,7 @@ Requisites: Binwalk, dd
 ## 2 - Extract the private part of the certificate
   **Linux - cert_dpapi.py**
   
-Pass as parameters, -f the location of the file, -m the needed masterkey --sid the SID of the user, -p password or --no-pass to try with a blank password
+Pass as parameters, -f the location of the file, -m the location of the Masterkey files --sid the SID of the user, -p password or --no-pass to try with a blank password
 Script will export the certificate as a PEM file
 
 Requisites: impacket
