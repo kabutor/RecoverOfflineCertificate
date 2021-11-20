@@ -31,12 +31,14 @@ DER all the output files will be created there
 Requisites: Binwalk, dd
 
 ## 2 - Extract the private part of the certificate
+
   **Linux - one certificate - cert_dpapi.py**
   
 Pass as parameters, -f the location of the file, -m the location of the Masterkey files --sid the SID of the user, -p password or --no-pass to try with a blank password
 Script will export the certificate as a PEM file
 
 Requisites: impacket
+
   **Linux - batch recovery - batchpvkdump.sh**
   
   This is very useful when you have a lot of certificates (more than one also) :D
