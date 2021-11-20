@@ -35,8 +35,8 @@ Requisites: Binwalk, dd
 
   **Linux - one certificate - cert_dpapi.py**
   
-Pass as parameters, -f the location of the file, -m the location of the Masterkey files --sid the SID of the user, -p password or --no-pass to try with a blank password
-Script will export the certificate as a PEM file
+Pass as parameters, -f the location of the file(each of the files located into the **My** directory), -m the location of the Masterkey files (those are in the **Protect** directory) --sid the SID of the user( the SID is on the path (the long number like S-1-5-21-XXXX )), -p password or --no-pass if user has no password to log into windows, to try with a blank password
+Script will export the certificate as a PEM file in the PVK directory
 
 Requisites: impacket
 
