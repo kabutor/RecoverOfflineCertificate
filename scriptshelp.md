@@ -8,14 +8,15 @@ You also depends on some tools, those are on each of the steps
 You have to end having three folders, called *"My" "Protect"* and *"Crypto"*. You then manually have to create two more empty folders named *DER* and *PVK*
 
 Copy **My** directory located in:
-%appdata%/Microsoft/SystemCertificates/My/Certificates/47548351737BE8BE60E20450C6A54569C1761C71
+%appdata%/Microsoft/SystemCertificates/My
 to your **My** folder
 
 copy Masterkey located in
 %appdata%/Microsoft/Protect/
 to your **Protect** folder
 
-Then the private parts of the certificate that are in %appdata%/Microsoft/Crypto/
+Then the private parts of the certificate that are in
+%appdata%/Microsoft/Crypto/
 to your **Crypto** folder
 
 You now have all the needed files from the computer, lets go for the recovery
