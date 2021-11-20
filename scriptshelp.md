@@ -45,6 +45,7 @@ Requisites: impacket
   Edit the bactckpvkdump.sh, set your settings form cert_dpapi.py as is stated up, edit SID, pass etc, it will decrypt all the private parts, and fail 
   on the ones that are not certificates, at the end of this process you have to had some files on the PVK directory.
   
+  Requisites: (same as before) impacket
   
   **Windows - decrypt_PVK.ps1**
 
