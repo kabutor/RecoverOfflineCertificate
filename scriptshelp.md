@@ -5,7 +5,7 @@ they are *somehow raw*, and **you need to modify paths on the files** to match m
 You also depends on some tools, those are on each of the steps
 
 
-You have to end having three folders, called *"My" "Protect"* and *"Crypto"*. You then manually have to create two more enmpty folders *DER* and *PVK*
+You have to end having three folders, called *"My" "Protect"* and *"Crypto"*. You then manually have to create two more empty folders named *DER* and *PVK*
 
 Copy **My** directory located in:
 %appdata%/Microsoft/SystemCertificates/My/Certificates/47548351737BE8BE60E20450C6A54569C1761C71
