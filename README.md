@@ -9,8 +9,16 @@ If you have windows box you can't start, maybe the drive is broken, but you have
 - You need to be able to read the file structure of the broken/old Windows drive.
 - I will use some tools on linux, and other from windows, I guess you can do it all from windows, but I'm more comfortable doing it this way.
 - You need to know the password of the windows account the cert was installed. Also this works if the account is a local one, if it's a Microsoft Account I don’t think this is gonna work as the DPAPI encription password may (will) differ.
-- If you are gonna do this for a lot of certificates I did some scripts to help with that : https://github.com/kabutor/RecoverOfflineCertificate/blob/master/scriptshelp.md
 
+
+
+# Recover the cert
+
+If you just want to recover the certificate, go to this other link where I guide you how to do it, the next of this Readme is just theory of how it works (not needed)
+https://github.com/kabutor/RecoverOfflineCertificate/blob/master/scriptshelp.md
+
+
+# Howto
 
 ## Extract the certificates
 
