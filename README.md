@@ -2,7 +2,7 @@
 How to recover a certificate from a broken (offline) Windows box
 
 
-If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you recover it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
+If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you want to recover you can do it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
 
 ***Prerequisites***
 - This assume you are retrieving the files from a Windows 10, if you use a differente Windows versions some paths, file locations, may differ.
