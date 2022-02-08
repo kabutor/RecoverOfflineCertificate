@@ -2,19 +2,19 @@
 How to recover a certificate from a broken (offline) Windows box
 
 
-If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you can do it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
+If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you recover it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
 
 ***Prerequisites***
 - This assume you are retrieving the files from a Windows 10, if you use a differente Windows versions some paths, file locations, may differ.
 - You need to be able to read the file structure of the broken/old Windows drive.
 - I will use some tools on linux, and other from windows, I guess you can do it all from windows, but I'm more comfortable doing it this way.
-- You need to know the password of the windows account the cert was installed. Also this works if the account is a local one, if it's a Microsoft Account I don’t think this is gonna work as the DPAPI encription password may (will) differ.
+- You need to know the password of the windows account the cert was installed. (Not the HELLO Pin, the password)
 
 
 
 # Recover the cert
 
-If you just want to recover the certificate, go to this other link where I guide you how to do it, the next of this Readme is just theory of how it works (not needed)
+If you just want to recover the certificate, go to this link where I guide you how to do it, the next of this Readme is just theory of how it works (not needed)
 https://github.com/kabutor/RecoverOfflineCertificate/blob/master/scriptshelp.md
 
 
