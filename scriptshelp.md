@@ -1,8 +1,8 @@
 # Scripts
 
-I did some scripts to help with the process when you have a lot of certificates, 
+I did some scripts to help with the process, more useful when you have a lot of certificates, 
 they are *somehow raw*, and **you need to modify paths on the files** to match my filestree.
-You also depends on some tools, those are on each of the steps
+This scrips sometimes dependes on some tools you need to have installed, those are specified on each of the steps
 
 
 You have to end having three folders, called *"My" "Protect"* and *"Crypto"*. You then manually have to create two more empty folders named *DER* and *PVK*
