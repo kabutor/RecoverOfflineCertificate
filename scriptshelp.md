@@ -43,7 +43,7 @@ Requisites: impacket
   **Linux - batch recovery - batchpvkdump.sh**
   
   This is very useful when you have a lot of certificates (more than one also) :D
-  Edit the bactckpvkdump.sh, set your settings form cert_dpapi.py as is stated up, edit SID, pass etc, it will decrypt all the private parts, and fail 
+  Edit the batchpvkdump.sh, set your settings form cert_dpapi.py as is stated up, edit SID, pass etc, it will decrypt all the private parts, and fail 
   on the ones that are not certificates, at the end of this process some files will be on the PVK directory, those are the PVK private keys decrypted.
   
   Requisites: (same as before) impacket
