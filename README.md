@@ -14,6 +14,8 @@ If you have windows box you can't start, maybe the drive is broken, but you have
 
 The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\\users\\user_name) and the user password (-p) the rest is done automatically, you should have all the stored PKCS12/PFX files of that user with the password 12345.
 
+i.e. *pkcs12_dpapi_export.py -u /media/root/unit/Users/kabutor --password MySecretPassword*
+
 
 # Recover the cert (Old way)
 
