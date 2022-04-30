@@ -12,7 +12,7 @@ If you have windows box you can't start, maybe the drive is broken, but you have
 
 # Recover the cert (New way 20220501)
 
-The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\users\<name>) and the user password (-p) the rest is done automatically, you should have all the stored PKCS12/PFX files of that user with the password 12345.
+The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\\users\\<name>) and the user password (-p) the rest is done automatically, you should have all the stored PKCS12/PFX files of that user with the password 12345.
 
 
 # Recover the cert (Old way)
