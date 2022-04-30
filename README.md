@@ -10,9 +10,12 @@ If you have windows box you can't start, maybe the drive is broken, but you have
 - I will use some tools on linux, and other from windows, I guess you can do it all from windows, but I'm more comfortable doing it this way.
 - You need to know the password of the windows account the cert was installed. (Not the HELLO Pin, the password)
 
+# Recover the cert (New way 20220501)
+
+The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\users\<name>) and the user password (-p) the rest is done automatically, you should have all the stored PKCS12/PFX files of that user with the password 12345.
 
 
-# Recover the cert
+# Recover the cert (Old way)
 
 If you just want to recover the certificate, go to this link where I guide you how to do it, the next of this Readme is just theory of how it works (not needed)
 https://github.com/kabutor/RecoverOfflineCertificate/blob/master/scriptshelp.md
