@@ -38,17 +38,18 @@ def check_associate_cert_with_private_key(cert, private_key):
     except OpenSSL.SSL.Error:
         return False
 parser = argparse.ArgumentParser()
-parser.add_argument("--userpath","-u", help="User profile folder",default=None, type=str)
+parser.add_argument("--userpath","-u", help="User profile folder",default='.', type=str)
 parser.add_argument("--password", "-p", help="user password",default='')
-#parser.add_argument("--nopass","-n",dest="nopass",action='store_true',help="no password")
+#parser.add_argument("--nopass","-n",dest="nopass",action='store_true',help="no password") # need to test it it works with password='' or you need the hash
 args = parser.parse_args()
 
 certificates = []
 keys = []
 sid = ''
+add_path = os.path.join(args.userpath,'Appdata/Roaming/Microsoft/')
 
 #Get SID
-i = os.scandir('./Crypto/RSA')
+i = os.scandir(os.path.join(add_path,'Crypto/RSA'))
 for d in i:
     if (d.is_dir() and (d.name[0:3] == 'S-1')):
         sid = str(d.name)
@@ -61,7 +62,7 @@ print("*" * 80 )
 print("Extracting Public part of the certificate")
 print("*" * 80 )
 
-for pub_cert in os.scandir('./SystemCertificates/My/Certificates/'):
+for pub_cert in os.scandir(os.path.join(add_path,'SystemCertificates/My/Certificates/')):
     with open(pub_cert.path,'rb') as file:
         while r := file.read(1):
             if (r.hex() == '30'):
@@ -76,9 +77,9 @@ print("*" * 80 )
 print("Decrypting Keys, this can take a while, please wait")
 print("*" * 80 )
 
-masterkey_location = os.path.join('Protect', sid)
+masterkey_location = os.path.join(add_path,'Protect', sid)
 
-for priv_cert in os.scandir(os.path.join('./Crypto/RSA',sid)):
+for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
     with open(priv_cert.path, "rb") as f:
         binary = f.read()
         cert = certificate.PrivateKeyBlob(binary)
