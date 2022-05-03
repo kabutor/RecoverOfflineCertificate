@@ -46,7 +46,7 @@ args = parser.parse_args()
 certificates = []
 keys = []
 sid = ''
-add_path = os.path.join(args.userpath,'Appdata/Roaming/Microsoft/')
+add_path = os.path.join(args.userpath,'AppData/Roaming/Microsoft/')
 
 #Get SID
 i = os.scandir(os.path.join(add_path,'Crypto/RSA'))
