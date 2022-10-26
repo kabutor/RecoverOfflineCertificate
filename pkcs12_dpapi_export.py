@@ -8,6 +8,9 @@ from dpapick3.probes import certificate
 from dpapick3 import blob, masterkey, registry
 import OpenSSL
 import argparse
+import random
+
+DEBUG=False
 
 def check_associate_cert_with_private_key(cert, private_key):
     try:
@@ -85,7 +88,11 @@ for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
         cert = certificate.PrivateKeyBlob(binary)
         mkp = masterkey.MasterKeyPool()
         mkp.loadDirectory(masterkey_location)
-        #print(cert)
+        if DEBUG:
+            if ("FNMT" in (cert.description).decode('windows-1252')):
+                print(cert.description)
+                print(cert.flags)
+            #print(mkp)
         try:
             cert.try_decrypt_with_password(args.password,mkp,sid)
             if (cert.flags.cleartext):
@@ -96,11 +103,14 @@ for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
             print("[X]")
         print("-" * 80 )
 
-print("*" * 80 )
-print("Exporting PKCS12/PFX using 12345 as the password")
-print("*" * 80 )
+if (len(keys)) > 0:
+    print("*" * 80 )
+    print("Exporting PKCS12/PFX using 12345 as the password")
+    print("*" * 80 )
 
-for k in keys:
-    for certificate in certificates:
-        #Match certificate and private key
-        check_associate_cert_with_private_key(certificate,k)
+    for k in keys:
+        for certificate in certificates:
+            #Match certificate and private key
+            check_associate_cert_with_private_key(certificate,k)
+else:
+    print("No keys decrypted")
