@@ -29,7 +29,7 @@ def check_associate_cert_with_private_key(cert, private_key):
         pfx.set_privatekey(private_key_obj)
         pfx.set_certificate(cert_obj)
         name = (cert_obj.get_subject().CN).replace(" ","_")
-        name = name + "_password_12345.pfx"
+        name = name + "_" + str(random.randint(1111,9999)) + "_password_12345.pfx"
         pfxdata = pfx.export(b'12345')
         with open(name, 'wb') as pfxfile:
             pfxfile.write(pfxdata)
