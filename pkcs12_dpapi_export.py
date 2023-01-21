@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 '''
 Export certificate from Windows
 Doing it with DPAPICK3
@@ -74,7 +76,14 @@ for pub_cert in os.scandir(os.path.join(add_path,'SystemCertificates/My/Certific
                     pos = file.tell() -2
                     print("%s -> Offset at %d" % (pub_cert.name,pos))
                     file.seek(pos)
-                    certificates.append(file.read())
+                    x509_raw=file.read()
+                    certificates.append(x509_raw)
+                    if DEBUG:
+                        x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_ASN1, x509_raw )
+                        print(str(x509.get_issuer().OU) + " " + str(x509.get_issuer().CN))
+                        print("Not valid before: %s after: %s" % ( x509.get_notBefore().decode()[:8] ,x509.get_notAfter().decode()[:8]))
+                        print(x509.get_subject())
+                        print("#" * 50)
                     break
 print("*" * 80 )
 print("Decrypting Keys, this can take a while, please wait")
@@ -89,6 +98,7 @@ for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
         mkp = masterkey.MasterKeyPool()
         mkp.loadDirectory(masterkey_location)
         if DEBUG:
+            print(cert.flags)
             if ("FNMT" in (cert.description).decode('windows-1252')):
                 print(cert.description)
                 print(cert.flags)
