@@ -26,6 +26,8 @@ def check_associate_cert_with_private_key(cert, private_key):
         raise Exception('certificate is not correct: %s' % cert)
 
     context = OpenSSL.SSL.Context(OpenSSL.SSL.TLSv1_METHOD)
+    # if you get OPENSSL.SSL.Error: 'SSL routines' 'ca md too weak' uncomment next line 
+    # context.set_cipher_list('ALL:@SECLEVEL=0') 
     context.use_privatekey(private_key_obj)
     context.use_certificate(cert_obj)
     try:
