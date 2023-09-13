@@ -133,3 +133,23 @@ openssl.exe pkcs12 -in public.pem -inkey private.pem -password pass:newpass -key
 ```
 
 This will create a cert.pfx file we can install it on a computer using *newpass* as password.
+
+# Backup OnlineCertificate == EXTRA BONUS SECTION
+
+In this repo you also have three files to backup your certificates from windows, some people usually in Spain that work as as Accounting Manager and the like can have more than a 100 certificates in one computer. 
+To export all into separate files with 12345 as password you can use Export-ClientCertificates.ps1 and run it (maybe you have to disbable the script powershell policy or execute it with:
+powershell -exec bypass .\Export-ClientCertificates.ps1 
+
+Sometimes they are marked as non-exportable certificate, with these scripts you can export those if you combine it with Jailbreak, clone :
+https://github.com/iSECPartners/jailbreak
+And drop Export-ClientCertificates.ps1 and export_all_64bits.bat and run the latest one, that will run the powershell script under the jailbreak dll hook, and will enable you to export event the certificates marked as non-exportable.
+
+Also if you want to import all into a new computer Import-AllPfx.ps1 will do that, imports all the PFX files on the same directory as the script.
+
+***Extra note*** This scripts works on windows 10 assuming you have certificates in the user profile, as Windows does by default from Windows 8 and on, if you are in Windows 7 or the certs are in the Local Machine storage, you have to chaneg line 8 from:
+$certPath = "Cert:\CurrentUser\My"
+to
+$certPath = "Cert:\LocalMachine\My"
+
+Probably.
+
