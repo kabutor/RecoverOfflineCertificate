@@ -159,6 +159,5 @@ $certPath = "Cert:\LocalMachine\My"
 Probably.
 
 
-You find this useful in any way and want to thank me, you can do so with a coffee, thanks
-[![imagen](https://github.com/kabutor/EFS_recover_cert/assets/43006263/b210517a-0cfa-4cb6-bf64-e357bbea5734)](https://www.buymeacoffee.com/kabutor)
+[You find this useful in any way and want to thank me, you can do so with a coffee, thanks](https://www.buymeacoffee.com/kabutor)
 
