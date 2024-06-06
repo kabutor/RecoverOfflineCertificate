@@ -13,6 +13,7 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import pkcs12, PrivateFormat
+from cryptography.x509.oid import NameOID
 import argparse
 import random
 
@@ -22,10 +23,12 @@ def check_associate_cert_with_private_key(cert, private_key):
     cert_pem = x509.load_der_x509_certificate(cert)
     private_k = serialization.load_pem_private_key(private_key.encode('utf-8'), password=None)
  
-    #print("Modulus")
-    #print(private_k.public_numbers().n)
-    #name = (cert_obj.get_subject().CN).replace(" ","_")
-    name = "cert"
+    # "Modulus match public with private cert part"
+    mod_k = private_k.private_numbers().public_numbers.n
+    mod_p = cert_pem.public_key().public_numbers().n
+    if mod_k != mod_p:
+        return False 
+    name = (cert_pem.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value).replace(" ","_")
     password = "12345"
     
     encryption = (
@@ -34,11 +37,11 @@ def check_associate_cert_with_private_key(cert, private_key):
          key_cert_algorithm(pkcs12.PBES.PBESv1SHA1And3KeyTripleDESCBC).
          hmac_hash(hashes.SHA256()).build(f"{password}".encode())
     )
+    # forge certs key with public cert only when modulus is the same will work, if not error is raised
     try:
         p12 = pkcs12.serialize_key_and_certificates( f"{name}".encode(), private_k, cert_pem , None, encryption )
         #name = (cert_obj.get_subject().CN).replace(" ","_")
         name = name + "_" + str(random.randint(1111,9999)) + "_password_12345.pfx"
-        #pfxdata = pfx.export(b'12345')
 
         with open(name, 'wb') as pfxfile:
             pfxfile.write(p12)
@@ -119,13 +122,20 @@ for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
             cert.try_decrypt_with_password(args.password,mkp,sid)
             if (cert.flags.cleartext):
                 c = cert.export()
-                print("[o] Decrypted Key \n%s" % c)
-                keys.append(c)
+                # Keys tend to be several times, skip repeated ones
+                if c not in keys:
+                    keys.append(c)
+                    print("[o] Decrypted Key \n%s" % c)
+                else:
+                    if DEBUG:
+                        print("[-] Dupe key")
+
         except:
             print("[X]")
         print("-" * 80 )
 
 if (len(keys)) > 0:
+    print("Len keys %i" % len(keys))
     print("*" * 80 )
     print("Exporting PKCS12/PFX using 12345 as the password")
     print("*" * 80 )
