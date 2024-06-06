@@ -27,8 +27,13 @@ I find out that you need to have at least dpapick3 version 0.3.3 (I found the ha
 If you just want to recover the certificate the old way, in case the one above this is not working , go to this link where I guide you how to do it:
 https://github.com/kabutor/RecoverOfflineCertificate/blob/master/scriptshelp.md
 
+.
 
+.
 
+.
+
+.
 
 
 The rest of this Readme is just theory of how it works (not needed unless you want to know more)
