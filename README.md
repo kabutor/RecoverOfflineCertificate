@@ -19,7 +19,7 @@ i.e. *pkcs12_dpapi_export.py -u /media/root/unit/Users/kabutor --password MySecr
 I find out that you need to have at least dpapick3 version 0.3.3 (I found the hard way that with dpapick version 0.3.2 is not working) 
 
 
-Changelog - 2024 06 06: Added -l option (just to list the public certificates attributes and quit. Removes PyOpenSSL as it deprecates PKCS12, replaced with cryptography. Also some changes into the way the script handles the dpapi decryption it does improves the speed by 10 or more
+*Changelog* - 2024 06 06: Added -l option (just to list the public certificates attributes and quit. Removes PyOpenSSL as it deprecates PKCS12, replaced with cryptography. Also some changes into the way the script handles the dpapi decryption it does improves the speed by 10 or more
 
 
 # Recover the cert (Old way)
