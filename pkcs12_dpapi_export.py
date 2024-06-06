@@ -9,44 +9,48 @@ import os, sys
 from dpapick3.probes import certificate
 from dpapick3 import blob, masterkey, registry
 import OpenSSL
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.serialization import pkcs12, PrivateFormat
 import argparse
 import random
 
 DEBUG=False
 
 def check_associate_cert_with_private_key(cert, private_key):
+    cert_pem = x509.load_der_x509_certificate(cert)
+    private_k = serialization.load_pem_private_key(private_key.encode('utf-8'), password=None)
+ 
+    #print("Modulus")
+    #print(private_k.public_numbers().n)
+    #name = (cert_obj.get_subject().CN).replace(" ","_")
+    name = "cert"
+    password = "12345"
+    
+    encryption = (
+         PrivateFormat.PKCS12.encryption_builder().
+         kdf_rounds(50000).
+         key_cert_algorithm(pkcs12.PBES.PBESv1SHA1And3KeyTripleDESCBC).
+         hmac_hash(hashes.SHA256()).build(f"{password}".encode())
+    )
     try:
-        private_key_obj = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, private_key)
-    except OpenSSL.crypto.Error:
-        raise Exception('private key is not correct: %s' % private_key)
-
-    try:
-        cert_obj = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_ASN1, cert)
-    except OpenSSL.crypto.Error:
-        raise Exception('certificate is not correct: %s' % cert)
-
-    context = OpenSSL.SSL.Context(OpenSSL.SSL.TLSv1_METHOD)
-    # if you get OPENSSL.SSL.Error: 'SSL routines' 'ca md too weak' uncomment next line 
-    # context.set_cipher_list('ALL:@SECLEVEL=0') 
-    context.use_privatekey(private_key_obj)
-    context.use_certificate(cert_obj)
-    try:
-        context.check_privatekey()
-        pfx = OpenSSL.crypto.PKCS12()
-        pfx.set_privatekey(private_key_obj)
-        pfx.set_certificate(cert_obj)
-        name = (cert_obj.get_subject().CN).replace(" ","_")
+        p12 = pkcs12.serialize_key_and_certificates( f"{name}".encode(), private_k, cert_pem , None, encryption )
+        #name = (cert_obj.get_subject().CN).replace(" ","_")
         name = name + "_" + str(random.randint(1111,9999)) + "_password_12345.pfx"
-        pfxdata = pfx.export(b'12345')
+        #pfxdata = pfx.export(b'12345')
+
         with open(name, 'wb') as pfxfile:
-            pfxfile.write(pfxdata)
+            pfxfile.write(p12)
         print("Saved P12 as : %s" % name)
         return True
-    except OpenSSL.SSL.Error:
-        return False
+    except ValueError:
+        pass
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--userpath","-u", help="User profile folder",default='.', type=str)
 parser.add_argument("--password", "-p", help="user password",default='')
+parser.add_argument("--list","-l", help="List only certificates", default=False, action='store_true')
 #parser.add_argument("--nopass","-n",dest="nopass",action='store_true',help="no password") # need to test it it works with password='' or you need the hash
 args = parser.parse_args()
 
@@ -80,25 +84,31 @@ for pub_cert in os.scandir(os.path.join(add_path,'SystemCertificates/My/Certific
                     file.seek(pos)
                     x509_raw=file.read()
                     certificates.append(x509_raw)
-                    if DEBUG:
-                        x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_ASN1, x509_raw )
-                        print(str(x509.get_issuer().OU) + " " + str(x509.get_issuer().CN))
-                        print("Not valid before: %s after: %s" % ( x509.get_notBefore().decode()[:8] ,x509.get_notAfter().decode()[:8]))
-                        print(x509.get_subject())
-                        print("#" * 50)
+                    x509_s = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_ASN1, x509_raw )
+                    print(str(x509_s.get_issuer().OU) + " " + str(x509_s.get_issuer().CN))
+                    print("Not valid before: %s after: %s" % ( x509_s.get_notBefore().decode()[:8] ,x509_s.get_notAfter().decode()[:8]))
+                    print(x509_s.get_subject())
+                    print("#" * 50)
                     break
+
+# List only up to here
+if args.list == True:
+    sys.exit()
+
 print("*" * 80 )
 print("Decrypting Keys, this can take a while, please wait")
 print("*" * 80 )
 
 masterkey_location = os.path.join(add_path,'Protect', sid)
-
+mkp = masterkey.MasterKeyPool()
+mkp.loadDirectory(masterkey_location)
+print("Loaded Masterkeys") 
 for priv_cert in os.scandir(os.path.join(add_path,'Crypto/RSA',sid)):
     with open(priv_cert.path, "rb") as f:
         binary = f.read()
         cert = certificate.PrivateKeyBlob(binary)
-        mkp = masterkey.MasterKeyPool()
-        mkp.loadDirectory(masterkey_location)
+        #mkp = masterkey.MasterKeyPool()
+        #mkp.loadDirectory(masterkey_location)
         if DEBUG:
             print(cert.flags)
             if ("FNMT" in (cert.description).decode('windows-1252')):
