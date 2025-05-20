@@ -5,16 +5,15 @@ How to recover a certificate from a broken (offline) Windows box
 If you have windows box you can't start, maybe the drive is broken, but you have in there some certificates you want to recover you can do it following this guide. I will use a mix of Linux and Windows tools, you need to be skilled with computers, this is not a simple process, as the certificate (PFX) that windows uses has a public certificate part and a private one encripted with DPAPI.
 
 ***Prerequisites***
-- This assume you are retrieving the files from a Windows 10, if you use a differente Windows versions some paths, file locations, may differ.
-- You need to be able to read the file structure of the broken/old Windows drive.
-- I will use some tools on linux, and other from windows, I guess you can do it all from windows, but I'm more comfortable doing it this way.
-- You need to know the password of the windows account the cert was installed. (Not the HELLO Pin, the password)
+- This assume you are retrieving the files from a Windows 10/11, if you use a different Windows version some paths, file locations, may differ.
+- You need to be able to read the file structure of the broken/old Windows drive, connect the drive to another computer, or boot from a pendrive.
+- You need to know the password of the windows account the cert was installed. (Not the HELLO Pin, the login password)
 
 # Recover the cert (New way 20220501) (This is what you should use)
 
-The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\\users\\user_name) and the user password (-p) the rest is done automatically, you should have all the stored PKCS12/PFX files of that user with the password 12345.
+The new way is very easy, and much better, just install dpapick3 and execute *pkcs12_dpapi_export.py*, specify the user (-u) profile folder (C:\\users\\user_name) and the user password (-p) (if you didn't have a login password try with a blank one -password "")  the rest is done automatically, it will create a file for eacho the stored PKCS12/PFX files of that user with the password 12345.
 
-i.e. *pkcs12_dpapi_export.py -u /media/root/unit/Users/kabutor --password MySecretPassword*
+i.e. ***pkcs12_dpapi_export.py -u /media/root/unit/Users/kabutor --password MySecretPassword***
 
 I find out that you need to have at least dpapick3 version 0.3.3 (I found the hard way that with dpapick version 0.3.2 is not working) 
 
