@@ -29,6 +29,7 @@ def check_associate_cert_with_private_key(cert, private_key):
     if mod_k != mod_p:
         return False 
     name = (cert_pem.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value).replace(" ","_")
+    name = name.replace(":","_")
     password = "12345"
     
     encryption = (
